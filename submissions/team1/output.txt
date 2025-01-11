@@ -1,0 +1,2 @@
+Solution Feasible: False
+Total Cost: 0

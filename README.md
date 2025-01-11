@@ -21,7 +21,7 @@ For more details on CVRP, see [Augerat Instances](http://vrp.galgos.inf.puc-rio.
 
 - **`/data/`**: Contains the testing datasets (e.g., `.vrp` and `.sol` files).
   - Augerat's instances from Set A and Set B are provided here.
-- **`/templates/`**: Contains template Python scripts.
+- **`/template_code/`**: Contains template Python scripts.
   - `read_instance.py`: Reads `.vrp` files and extracts data like node coordinates, demands, and capacities.
   - `verify_solution.py`: Checks the feasibility of a solution and calculates its cost.
 - **`/submissions/`**: Directories for each team to submit their solutions:
@@ -42,10 +42,12 @@ For more details on CVRP, see [Augerat Instances](http://vrp.galgos.inf.puc-rio.
 
 2. **Explore the Data**
 
-   - Testing data is located in the `data/` folder. Use the template scripts in `templates/` to parse and analyze the datasets.
+   - Testing data is located in the `data/` folder. Use the template scripts in `template_code/` to parse and analyze the datasets.
 
 3. **Submit Your Solutions**
    - Each team should submit their solutions to their respective folder under `/submissions/`.
+   - You can also make a pull request, and I'll merge it.
+
 
 ---
 
@@ -81,4 +83,4 @@ For any inquiries or issues, please contact your friend Ahmed (hehe).
 
 ---
 
-Happy coding and good luck! 🚀
+Happy coding and good luck les amis! 🚀
