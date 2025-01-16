@@ -27,7 +27,7 @@ def verify_solution(instance_data, solution):
     nodes = instance_data["nodes"]
     demands = instance_data["demands"]
     capacity = instance_data["capacity"]
-    depot = instance_data["depot"]
+    depot = 0
     required_trucks = instance_data.get("trucks", None)
     optimal_value = instance_data.get("optimal_value", None)
 
