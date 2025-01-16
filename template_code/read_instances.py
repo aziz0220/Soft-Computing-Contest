@@ -1,3 +1,5 @@
+import re
+
 def read_instance(file_path):
     """
     Reads a .vrp file and extracts problem data.
@@ -8,7 +10,8 @@ def read_instance(file_path):
     Returns:
         dict: Contains the following keys:
             - name (str): Name of the instance.
-            - comment (str): Additional information.
+            - trucks (int): Number of trucks.
+            - optimal_value (int): Optimal solution value.
             - dimension (int): Number of nodes.
             - capacity (int): Vehicle capacity.
             - nodes (dict): Node coordinates as {node_id: (x, y)}.
@@ -28,7 +31,11 @@ def read_instance(file_path):
         if line.startswith("NAME"):
             data["name"] = line.split(":")[1].strip()
         elif line.startswith("COMMENT"):
-            data["comment"] = line.split(":")[1].strip()
+            comment = line.split(":", 1)[1].strip()
+            trucks_match = re.search(r"No of trucks: (\d+)", comment)
+            optimal_match = re.search(r"Optimal value: (\d+)", comment)
+            data["trucks"] = int(trucks_match.group(1)) if trucks_match else None
+            data["optimal_value"] = int(optimal_match.group(1)) if optimal_match else None
         elif line.startswith("DIMENSION"):
             data["dimension"] = int(line.split(":")[1].strip())
         elif line.startswith("CAPACITY"):
@@ -50,7 +57,10 @@ def read_instance(file_path):
             node_id, demand = int(parts[0]), int(parts[1])
             demands[node_id] = demand
         elif section == "depot":
-            data["depot"] = int(line)
+            if line == "-1":
+                section = None  # End of depot section
+            else:
+                data["depot"] = int(line)  # Store the depot node ID
 
     data["nodes"] = nodes
     data["demands"] = demands

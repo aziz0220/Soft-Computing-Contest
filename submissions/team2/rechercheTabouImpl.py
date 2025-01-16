@@ -3,6 +3,14 @@ import pstats
 import io
 import math
 import random
+import sys
+import os
+
+# Add the parent directory to sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
+
+from template_code.read_instances import read_instance
+from template_code.verify_solution import verify_solution
 
 # Calcul de la distance entre deux nœuds
 def calculate_distance(node1, node2):
@@ -167,3 +175,8 @@ ps.print_stats()
 print(s.getvalue())
 # Affichage des résultats
 print_solution(best_solution, best_cost)
+#verifying the solution
+instance_data = read_instance(filename)
+# print(best_solution)
+print(verify_solution(instance_data, best_solution))
+
