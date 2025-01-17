@@ -115,68 +115,68 @@ def tabu_search(node_coords, demands, capacity, max_iterations, tabu_tenure):
 
     return best_solution, best_cost
 
-# Fonction pour parser le fichier VRP
-def parse_vrp_file(filename):
-    with open(filename, 'r') as file:
-        lines = file.readlines()
+#Fonction pour parser le fichier VRP
+# def parse_vrp_file(filename):
+#     with open(filename, 'r') as file:
+#         lines = file.readlines()
 
-    node_coords = {}
-    demands = {}
-    capacity = 0
-    section = None
+#     node_coords = {}
+#     demands = {}
+#     capacity = 0
+#     section = None
 
-    for line in lines:
-        line = line.strip()
-        if line.startswith('CAPACITY'):
-            capacity = int(line.split(':')[1].strip())
-        elif line.startswith('NODE_COORD_SECTION'):
-            section = 'NODE_COORD'
-        elif line.startswith('DEMAND_SECTION'):
-            section = 'DEMAND'
-        elif line.startswith('DEPOT_SECTION'):
-            section = 'DEPOT'
-        elif line == 'EOF':
-            break
-        elif section == 'NODE_COORD':
-            parts = line.split()
-            node_coords[int(parts[0])] = (int(parts[1]), int(parts[2]))
-        elif section == 'DEMAND':
-            parts = line.split()
-            demands[int(parts[0])] = int(parts[1])
+#     for line in lines:
+#         line = line.strip()
+#         if line.startswith('CAPACITY'):
+#             capacity = int(line.split(':')[1].strip())
+#         elif line.startswith('NODE_COORD_SECTION'):
+#             section = 'NODE_COORD'
+#         elif line.startswith('DEMAND_SECTION'):
+#             section = 'DEMAND'
+#         elif line.startswith('DEPOT_SECTION'):
+#             section = 'DEPOT'
+#         elif line == 'EOF':
+#             break
+#         elif section == 'NODE_COORD':
+#             parts = line.split()
+#             node_coords[int(parts[0])] = (int(parts[1]), int(parts[2]))
+#         elif section == 'DEMAND':
+#             parts = line.split()
+#             demands[int(parts[0])] = int(parts[1])
 
-    return node_coords, demands, capacity
-# Fonction d'affichage de la solution dans le format désiré
-def print_solution(routes, cost):
-    for i, route in enumerate(routes, start=1):
-        print(f"Route #{i}: {' '.join(map(str, route))}")
-    print(f"Cost {cost}")
+#     return node_coords, demands, capacity
+# # Fonction d'affichage de la solution dans le format désiré
+# def print_solution(routes, cost):
+#     for i, route in enumerate(routes, start=1):
+#         print(f"Route #{i}: {' '.join(map(str, route))}")
+#     print(f"Cost {cost}")
 
-filename = '../../data/A/A-n32-k5.vrp'  
-node_coords, demands, capacity = parse_vrp_file(filename)
+# filename = '../../data/A/A-n32-k5.vrp'  
+# node_coords, demands, capacity = parse_vrp_file(filename)
 
-# Paramètres
-max_iterations = 100
-tabu_tenure = 10
+# # Paramètres
+# max_iterations = 100
+# tabu_tenure = 10
 
-# Profilage
-pr = cProfile.Profile()
-pr.enable()
+# # Profilage
+# pr = cProfile.Profile()
+# pr.enable()
 
-# Résolution
-best_solution, best_cost = tabu_search(node_coords, demands, capacity, max_iterations, tabu_tenure)
+# # Résolution
+# best_solution, best_cost = tabu_search(node_coords, demands, capacity, max_iterations, tabu_tenure)
 
-pr.disable()
-s = io.StringIO()
-ps = pstats.Stats(pr, stream=s).sort_stats('cumulative')
-ps.print_stats()
+# pr.disable()
+# s = io.StringIO()
+# ps = pstats.Stats(pr, stream=s).sort_stats('cumulative')
+# ps.print_stats()
 
-# Résultats
+# # Résultats
 
-print(s.getvalue())
-# Affichage des résultats
-print_solution(best_solution, best_cost)
-#verifying the solution
-instance_data = read_instance(filename)
-# print(best_solution)
-print(verify_solution(instance_data, best_solution))
+# print(s.getvalue())
+# # Affichage des résultats
+# print_solution(best_solution, best_cost)
+# #verifying the solution
+# instance_data = read_instance(filename)
+# # print(best_solution)
+# print(verify_solution(instance_data, best_solution))
 
