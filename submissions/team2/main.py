@@ -10,8 +10,8 @@ from read_instances import read_instance
 
 def main():
     # Chemin vers le fichier d'instance    
-    instance_path = r"C:\3eme\Soft computing\ContestProject\Soft-Computing-Contest\data\A\A-n32-k5.vrp"
-    optimal_solution_path = r"C:\3eme\Soft computing\ContestProject\Soft-Computing-Contest\data\A\A-n32-k5.sol"
+    instance_path = r"C:\Users\Yasmine\Desktop\soft computing\Soft-Computing-Contest\data\A\A-n32-k5.vrp"
+    optimal_solution_path = r"C:\Users\Yasmine\Desktop\soft computing\Soft-Computing-Contest\data\A\A-n32-k5.sol"
 
     # Vérification du fichier d'instance
     if not os.path.exists(instance_path):
@@ -31,11 +31,20 @@ def main():
     tabu_tenures = [5, 10, 20]
 
     # Evaluation globale sur toutes les instances
-    data_directory = r"C:\3eme\Soft computing\ContestProject\Soft-Computing-Contest\data"
-    results = evaluate_algorithm(data_directory, tabu_search, optimal_solution_path, iterations=max_iterations, tabu_tenures=tabu_tenures)
+    data_directory = r"C:\Users\Yasmine\Desktop\soft computing\Soft-Computing-Contest\data"
+    #results = evaluate_algorithm(data_directory, tabu_search, optimal_solution_path, iterations=max_iterations, tabu_tenures=tabu_tenures)
 
     # Affichage des résultats de l'évaluation globale
-    display_results(results)
+    #display_results(results)
+
+    taboue_results= evaluate_algorithm_for_single_instance(instance_path, tabu_search, optimal_solution_path, iterations=max_iterations, tabu_tenures=tabu_tenures)
+
+    display_results(taboue_results)
+
+    plot_simple_results(taboue_results)
+
+    # Comparison des 4 approches
+    #generate_plots(taboue_results, recuit_results, locale_results, gloutonne_results)
 
 
 if __name__ == "__main__":
