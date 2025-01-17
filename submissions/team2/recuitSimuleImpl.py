@@ -104,15 +104,22 @@ def simulated_annealing(instance_data, initial_temp, final_temp, alpha, max_iter
     return best_solution, best_cost
 
 
+def format_solution(solution):
+    """Formats the solution into a readable string format."""
+    formatted_routes = []
+    for i, route in enumerate(solution):
+        formatted_routes.append(f"Route #{i + 1}: {' '.join(map(str, route))}")
+    return "\n".join(formatted_routes)
+
 if __name__ == "__main__":
     # Example usage
-    file_path = "../../data/A/A-n32-k5.vrp"  
+    file_path = "../../data/B/B-n31-k5.vrp"  
     instance_data = read_instance(file_path)
 
-    initial_temp = 1000
+    initial_temp = 1000000
     final_temp = 5
-    alpha = 0.95
-    max_iterations = 100
+    alpha = 0.99
+    max_iterations = 1000
 
     best_solution, best_cost = simulated_annealing(
         instance_data,
@@ -124,9 +131,10 @@ if __name__ == "__main__":
 
     is_feasible, violations, details = verify_solution(instance_data, best_solution)
 
-
-    print("Best Solution:", best_solution)
-    print("Best Cost:", best_cost)
+    # Format and display the solution
+    formatted_solution = format_solution(best_solution)
+    print(formatted_solution)
+    print(f"Cost {best_cost}")
 
 
     if is_feasible:
