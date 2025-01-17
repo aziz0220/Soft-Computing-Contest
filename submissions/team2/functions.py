@@ -50,27 +50,48 @@ def create_initial_solution(demands, capacity, distance_matrix, node_index_map):
 
 # Fonction de génération des voisins d'une solution
 def neighborhood_solution(routes, demands, capacity):
-    new_routes = [route.copy() for route in routes]  
-    route1, route2 = random.sample(new_routes, 2)  
 
-    if route1 and route2:
-        node1 = random.choice(route1)  
-        node2 = random.choice(route2)  
+    solutions = set()  
 
-        load_route1 = sum(demands[node] for node in route1)
-        load_route2 = sum(demands[node] for node in route2)
+    while len(solutions) < 30:  
+        new_routes = [route.copy() for route in routes] 
+        route1, route2 = random.sample(new_routes, 2)  
 
-        load_route1_after = load_route1 - demands[node1] + demands[node2]
-        load_route2_after = load_route2 - demands[node2] + demands[node1]
+        if route1 and route2:  
+            node1 = random.choice(route1)  
+            node2 = random.choice(route2)  
 
-       
-        if load_route1_after <= capacity and load_route2_after <= capacity:
-            route1.remove(node1)  
-            route2.remove(node2)  
-            route1.append(node2)  
-            route2.append(node1)  
+            load_route1 = sum(demands[node] for node in route1)
+            load_route2 = sum(demands[node] for node in route2)
 
-    return new_routes
+            if load_route2 + demands[node1] <= capacity:
+                route1.remove(node1)
+                route2.append(node1)
+                solutions.add(tuple(map(tuple, new_routes)))  
+                continue  
+
+            if load_route1 + demands[node2] <= capacity:
+                route2.remove(node2)
+                route1.append(node2)
+                solutions.add(tuple(map(tuple, new_routes)))  
+                continue  
+
+            load_route1_after = load_route1 - demands[node1] + demands[node2]
+            load_route2_after = load_route2 - demands[node2] + demands[node1]
+
+            if load_route1_after <= capacity and load_route2_after <= capacity:
+                route1.remove(node1)
+                route2.remove(node2)
+                route1.append(node2)
+                route2.append(node1)
+                solutions.add(tuple(map(tuple, new_routes)))  
+                continue  
+
+      
+        continue
+
+    return [list(map(list, solution)) for solution in solutions]
+
 
 def parse_vrp_file(filename):
     with open(filename, 'r') as file:

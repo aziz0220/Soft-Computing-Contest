@@ -51,6 +51,7 @@ def read_instance(file_path):
             demands[node_id] = demand
         elif section == "depot":
             data["depot"] = int(line)
+            
 
     data["nodes"] = nodes
     data["demands"] = demands

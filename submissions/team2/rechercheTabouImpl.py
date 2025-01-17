@@ -26,9 +26,9 @@ def tabu_search(node_coords, demands, capacity, max_iterations, tabu_tenure, dep
 
     for iteration in range(max_iterations):
         neighborhood = []
-        for _ in range(10):
-            neighbor = neighborhood_solution(best_solution, demands, capacity)
-            neighborhood.append(neighbor)
+
+        neighbors = neighborhood_solution(best_solution, demands, capacity)
+        neighborhood.extend(neighbors)
 
         best_candidate = None
         best_candidate_cost = float('inf')
@@ -58,8 +58,8 @@ filename = '../../data/A/A-n32-k5.vrp'
 node_coords, demands, capacity, depot_coords = parse_vrp_file(filename)
 
 # Paramètres
-max_iterations = 1000
-tabu_tenure = 100
+max_iterations = 100
+tabu_tenure = 10
 
 # Résolution avec recherche Tabou
 best_solution, best_cost = tabu_search(node_coords, demands, capacity, max_iterations, tabu_tenure, depot_coords)
