@@ -116,10 +116,10 @@ if __name__ == "__main__":
     file_path = "../../data/B/B-n31-k5.vrp"  
     instance_data = read_instance(file_path)
 
-    initial_temp = 1000000
+    initial_temp = 1000
     final_temp = 5
     alpha = 0.99
-    max_iterations = 1000
+    max_iterations = 100
 
     best_solution, best_cost = simulated_annealing(
         instance_data,
