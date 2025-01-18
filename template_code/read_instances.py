@@ -56,8 +56,8 @@ def read_instance(file_path):
             parts = line.split()
             node_id, demand = int(parts[0]), int(parts[1])
             demands[node_id] = demand
-        elif section == "depot":
-            data["depot"] = int(line)
+        
+        nodes[0] = (1, -1)
             
 
     data["nodes"] = nodes

@@ -1,9 +1,11 @@
 import math
 import os
 import sys
-from read_instances import read_instance
-from verify_solution import verify_solution
-from verify_solution import euclidean_distance
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
+
+from template_code.read_instances import read_instance
+from template_code.verify_solution import verify_solution
+from template_code.verify_solution import euclidean_distance
 
 def greedy_cvrp(nodes, demands, capacity):
     """
@@ -16,6 +18,7 @@ def greedy_cvrp(nodes, demands, capacity):
 
     Returns:
         list: Routes for each vehicle.
+        float: Total cost of the solution.
     """
     unvisited = set(demands.keys()) - {0}  # Exclude the depot (node 0)
     routes = []
@@ -49,7 +52,10 @@ def greedy_cvrp(nodes, demands, capacity):
 
         routes.append(current_route)
 
-    return routes
+    # Calculate the total cost of the solution
+    cost = calculate_cost(routes, nodes)
+
+    return routes, cost
 
 
 def calculate_cost(solution, nodes):
@@ -92,7 +98,7 @@ def format_solution(solution):
 
 if __name__ == "__main__":
     # Example usage
-    file_path ="../data/A/A-n33-k5.vrp"  # Adjust the path to your .vrp file
+    file_path ="../../data/A/A-n33-k5.vrp"  # Adjust the path to your .vrp file
     instance_data = read_instance(file_path)
 
     # Parse instance data
