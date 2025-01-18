@@ -56,9 +56,9 @@ def read_instance(file_path):
             parts = line.split()
             node_id, demand = int(parts[0]), int(parts[1])
             demands[node_id] = demand
-        
-    
-    nodes[0] = (1, -1)  # Assign coordinates (1, -1) to the depot
+        elif section == "depot":
+            data["depot"] = int(line)
+            
 
     data["nodes"] = nodes
     data["demands"] = demands
