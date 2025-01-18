@@ -27,10 +27,11 @@ def main():
     demands = instance_data["demands"]
     capacity = instance_data["capacity"]
 
+    
     # Chargement de la solution optimale
     optimal_solution = load_optimal_solution(optimal_solution_path)
 
-    # Parametres de la recherche taboue
+    # Paramètres de la recherche taboue
     max_iterations = 100
     tabu_tenures = [5, 10, 20]
 
@@ -49,6 +50,8 @@ def main():
 
     # Comparison des 4 approches
     #generate_plots(taboue_results, recuit_results, locale_results, gloutonne_results)
+
+
 
 
 if __name__ == "__main__":
