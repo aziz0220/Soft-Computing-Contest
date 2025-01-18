@@ -70,8 +70,14 @@ def evaluate_algorithm(data_path, sa_fn, solution_path, initial_temp=1000, final
                     proximities = []
                     total_simulations = 5
 
+                    iteration_limit = 0
+
                     for _ in range(total_simulations):
                         try:
+                            if valid_solutions >= iteration_limit:
+                                print(f"Reached the iteration limit of {iteration_limit}. Exiting loop.")
+                                break
+
                             print(f"Running simulated_annealing with initial_temp={init_temp} for {filename}")
 
                             start_time = time.time()
@@ -105,6 +111,7 @@ def evaluate_algorithm(data_path, sa_fn, solution_path, initial_temp=1000, final
                         except Exception as e:
                             print(f"Error during simulated_annealing or validation for {filename}, initial_temp={init_temp}: {e}")
                             continue
+
 
                     if costs:
                         initial_cost = costs[0]
