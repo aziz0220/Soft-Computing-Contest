@@ -2,11 +2,11 @@ import math
 import random
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "/")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
-from read_instances import read_instance
-from verify_solution import verify_solution
-from verify_solution import euclidean_distance
+from template_code.read_instances import read_instance
+from template_code.verify_solution import verify_solution
+from template_code.verify_solution import euclidean_distance
 
 
 def calculate_cost(solution, nodes):
@@ -113,7 +113,7 @@ def format_solution(solution):
 
 if __name__ == "__main__":
     # Example usage
-    file_path = "../../data/B/B-n34-k5.vrp"  
+    file_path = "../../data/B/B-n44-k7.vrp"  
     instance_data = read_instance(file_path)
 
     initial_temp = 1000

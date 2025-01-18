@@ -4,8 +4,8 @@ import time
 
 # Ajout explicit du chemin du dossier 'template_code'
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../template_code')))
-# from rechTabouEvaluation import evaluate_algorithm, display_results,load_optimal_solution,evaluate_algorithm_for_single_instance
-# from rechercheTabouImpl import tabu_search
+from rechTabouEvaluation import evaluate_algorithm, display_results,load_optimal_solution,evaluate_algorithm_for_single_instance
+from rechercheTabouImpl import tabu_search
 from recuitSimuleEvaluation import evaluate_algorithm as recuit_evaluate_algorithm, display_results as recuit_display_results
 from recuitSimuleImpl import simulated_annealing
 from Comparaison import  plot_simple_results
@@ -38,10 +38,10 @@ def main():
 
     # Evaluation globale sur toutes les instances
     data_directory = os.path.join(script_dir, "../../data")
-    #results = evaluate_algorithm(data_directory, tabu_search, optimal_solution_path, iterations=max_iterations, tabu_tenures=tabu_tenures)
+    # results = evaluate_algorithm(data_directory, tabu_search, optimal_solution_path, iterations=max_iterations, tabu_tenures=tabu_tenures)
 
-    # Affichage des résultats de l'évaluation globale
-    #display_results(results)
+    # # Affichage des résultats de l'évaluation globale
+    # display_results(results)
 
     # taboue_results= evaluate_algorithm_for_single_instance(instance_path, tabu_search, optimal_solution_path, iterations=max_iterations, tabu_tenures=tabu_tenures)
 
@@ -50,7 +50,7 @@ def main():
     # plot_simple_results(taboue_results)
 
     # Comparison des 4 approches
-    #generate_plots(taboue_results, recuit_results, locale_results, gloutonne_results)
+    # generate_plots(taboue_results, recuit_results, locale_results, gloutonne_results)
 
 
       # Parameters for Simulated Annealing
@@ -60,7 +60,7 @@ def main():
 
     recuit_results = recuit_evaluate_algorithm(data_directory, simulated_annealing, optimal_solution_path, initial_temp=initial_temp, final_temp=final_temp, alpha=alpha, max_iterations=max_iterations)
 
-    # recuit_display_results(recuit_results)
+    recuit_display_results(recuit_results)
 
     # plot_simple_results(recuit_results)
 
