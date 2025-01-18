@@ -37,7 +37,7 @@ def generate_initial_solution(num_customers, num_vehicles, capacity, demands):
             route_capacity += demands[customer]
         solution.append(route)
 
-    if customers:  # Remaining customers due to insufficient vehicles
+    if customers: 
         solution.append(customers)
 
     return solution
