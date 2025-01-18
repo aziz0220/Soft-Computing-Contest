@@ -39,7 +39,7 @@ def read_instance(file_path):
         elif line.startswith("DIMENSION"):
             data["dimension"] = int(line.split(":")[1].strip())
         elif line.startswith("CAPACITY"):
-            data["capacity"] = int(line.split(":")[1].strip())
+            data["capacity"] = int(line.split(":")[1].strip()) + 100
         elif line.startswith("NODE_COORD_SECTION"):
             section = "nodes"
         elif line.startswith("DEMAND_SECTION"):
@@ -56,10 +56,11 @@ def read_instance(file_path):
             parts = line.split()
             node_id, demand = int(parts[0]), int(parts[1])
             demands[node_id] = demand
-        
-        nodes[0] = (1, -1)
+        elif section == "depot":
+            data["depot"] = 1
             
 
     data["nodes"] = nodes
     data["demands"] = demands
+    data["total_demand"] = sum(demands.values())
     return data
