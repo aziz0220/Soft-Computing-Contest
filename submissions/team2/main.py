@@ -32,7 +32,7 @@ def main():
     # Chargement de la solution optimale
     # optimal_solution = load_optimal_solution(optimal_solution_path)
 
-    # Parametres de la recherche taboue
+    # Paramètres de la recherche taboue
     max_iterations = 100
     tabu_tenures = [5, 10, 20]
 
