@@ -60,7 +60,7 @@ def main():
 
     recuit_results = recuit_evaluate_algorithm(data_directory, simulated_annealing, optimal_solution_path, initial_temp=initial_temp, final_temp=final_temp, alpha=alpha, max_iterations=max_iterations)
 
-    recuit_display_results(recuit_results)
+    # recuit_display_results(recuit_results)
 
     # plot_simple_results(recuit_results)
 
