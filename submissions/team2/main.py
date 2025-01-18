@@ -4,8 +4,10 @@ import time
 
 # Ajout explicit du chemin du dossier 'template_code'
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../template_code')))
-from rechTabouEvaluation import evaluate_algorithm, display_results,load_optimal_solution,evaluate_algorithm_for_single_instance
-from rechercheTabouImpl import tabu_search
+# from rechTabouEvaluation import evaluate_algorithm, display_results,load_optimal_solution,evaluate_algorithm_for_single_instance
+# from rechercheTabouImpl import tabu_search
+from recuitSimuleEvaluation import evaluate_algorithm as recuit_evaluate_algorithm, display_results as recuit_display_results
+from recuitSimuleImpl import simulated_annealing
 from Comparaison import  plot_simple_results
 from read_instances import read_instance
 
@@ -28,7 +30,7 @@ def main():
     capacity = instance_data["capacity"]
 
     # Chargement de la solution optimale
-    optimal_solution = load_optimal_solution(optimal_solution_path)
+    # optimal_solution = load_optimal_solution(optimal_solution_path)
 
     # Parametres de la recherche taboue
     max_iterations = 100
@@ -41,14 +43,26 @@ def main():
     # Affichage des résultats de l'évaluation globale
     #display_results(results)
 
-    taboue_results= evaluate_algorithm_for_single_instance(instance_path, tabu_search, optimal_solution_path, iterations=max_iterations, tabu_tenures=tabu_tenures)
+    # taboue_results= evaluate_algorithm_for_single_instance(instance_path, tabu_search, optimal_solution_path, iterations=max_iterations, tabu_tenures=tabu_tenures)
 
-    display_results(taboue_results)
+    # display_results(taboue_results)
 
-    plot_simple_results(taboue_results)
+    # plot_simple_results(taboue_results)
 
     # Comparison des 4 approches
     #generate_plots(taboue_results, recuit_results, locale_results, gloutonne_results)
+
+
+      # Parameters for Simulated Annealing
+    initial_temp = 1000
+    final_temp = 5
+    alpha = 0.99
+
+    recuit_results = recuit_evaluate_algorithm(data_directory, simulated_annealing, optimal_solution_path, initial_temp=initial_temp, final_temp=final_temp, alpha=alpha, max_iterations=max_iterations)
+
+    recuit_display_results(recuit_results)
+
+    # plot_simple_results(recuit_results)
 
 
 if __name__ == "__main__":
