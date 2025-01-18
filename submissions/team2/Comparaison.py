@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
+import os
 
 
 def plot_simple_results(results):
@@ -12,10 +13,11 @@ def plot_simple_results(results):
         tabu_tenures = list(instance_results['tabu_tenures'].keys())
         avg_costs = [instance_results['tabu_tenures'][tenure]['average_cost'] for tenure in tabu_tenures]
 
+        filename = os.path.basename(instance_path)
         # Graphique du coût moyen par tenure
         plt.figure(figsize=(8, 5))
         plt.plot(tabu_tenures, avg_costs, marker='o', color='b', label='Coût moyen')
-        plt.title(f"Coût moyen par tenure - {instance_path}")
+        plt.title(f"Coût moyen par tenure - {filename}")
         plt.xlabel("Tenure de recherche tabou")
         plt.ylabel("Coût moyen")
         plt.grid(True)

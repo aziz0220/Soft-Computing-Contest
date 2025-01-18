@@ -158,13 +158,14 @@ def evaluate_algorithm_for_single_instance(instance_path, tabu_search_fn, soluti
     Évalue l'algorithme de recherche tabou sur une seule instance et ses paramètres.
     """
     results = {}
-    print(f"Processing instance file: {instance_path}")
+    filename = os.path.basename(instance_path)
+    print(f"Processing instance file: {filename}")
 
     try:
         # Lecture des données de l'instance
         instance_data = read_instance(instance_path)
         nodes, demands, capacity = instance_data["nodes"], instance_data["demands"], instance_data["capacity"]
-        print(f"Instance data loaded for {instance_path}")
+        print(f"Instance data loaded for {filename}")
         
         # Chargement de la solution optimale
         optimal_routes, optimal_cost = parse_solution_file(solution_path)
@@ -188,7 +189,7 @@ def evaluate_algorithm_for_single_instance(instance_path, tabu_search_fn, soluti
 
         for _ in range(total_simulations):  # Nombre de simulations par paramètre
             try:
-                print(f"Running tabu_search with tenure={tenure} for {instance_path}")
+                print(f"Running tabu_search with tenure={tenure} for {filename}")
                 
                 # Mesure du temps d'exécution
                 start_time = time.time()
@@ -218,7 +219,7 @@ def evaluate_algorithm_for_single_instance(instance_path, tabu_search_fn, soluti
                 if is_valid:
                     valid_solutions += 1
             except Exception as e:
-                print(f"Error during tabu_search or validation for {instance_path}, tenure={tenure}: {e}")
+                print(f"Error during tabu_search or validation for {filename}, tenure={tenure}: {e}")
                 continue
         
         if costs:
@@ -236,7 +237,7 @@ def evaluate_algorithm_for_single_instance(instance_path, tabu_search_fn, soluti
                 'convergence_rate': (initial_cost - min(costs)) / initial_cost * 100  # Taux de convergence
             }
         else:
-            print(f"No costs recorded for {instance_path} with tenure={tenure}")
+            print(f"No costs recorded for {filename} with tenure={tenure}")
 
     results[instance_path] = instance_results
 
