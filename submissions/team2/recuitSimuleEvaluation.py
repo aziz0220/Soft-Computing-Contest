@@ -8,7 +8,7 @@ import time
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../template_code')))
 from read_instances import read_instance
 from verify_solution import verify_solution
-from recuitSimuleImpl import simulated_annealing
+from recuitSimuleImpl import simulated_annealing, format_solution
 
 def parse_solution_file(solution_path):
     optimal_cost = None
@@ -70,14 +70,8 @@ def evaluate_algorithm(data_path, sa_fn, solution_path, initial_temp=1000, final
                     proximities = []
                     total_simulations = 5
 
-                    iteration_limit = 0
-
                     for _ in range(total_simulations):
                         try:
-                            if valid_solutions >= iteration_limit:
-                                print(f"Reached the iteration limit of {iteration_limit}. Exiting loop.")
-                                break
-
                             print(f"Running simulated_annealing with initial_temp={init_temp} for {filename}")
 
                             start_time = time.time()
@@ -111,7 +105,6 @@ def evaluate_algorithm(data_path, sa_fn, solution_path, initial_temp=1000, final
                         except Exception as e:
                             print(f"Error during simulated_annealing or validation for {filename}, initial_temp={init_temp}: {e}")
                             continue
-
 
                     if costs:
                         initial_cost = costs[0]
@@ -147,3 +140,123 @@ def display_results(results):
             print(f"    Average Proximity: {metrics['average_proximity']:.2f}%")
             print(f"    Diversity: {metrics['diversity']:.2f}")
             print(f"    Convergence Rate: {metrics['convergence_rate']:.2f}%")
+
+
+
+
+
+
+
+
+
+
+def evaluate_one_instance(instance_path, sa_fn, solution_path, initial_temp=1000, final_temp=5, alpha=0.99, max_iterations=100, total_simulations=0):
+    try:
+        # Load instance data
+        instance_data = read_instance(instance_path)
+        nodes, demands, capacity = instance_data["nodes"], instance_data["demands"], instance_data["capacity"]
+        print(f"Instance data loaded for {instance_path}")
+
+        # Load optimal solution data
+        optimal_routes, optimal_cost = parse_solution_file(solution_path)
+        print(f"Optimal cost loaded: {optimal_cost}")
+
+    except Exception as e:
+        print(f"Error loading instance or solution data: {e}")
+        return None
+
+    results = {
+        'initial_temp': initial_temp,
+        'costs': [],
+        'valid_solutions': 0,
+        'exec_times': [],
+        'proximities': [],
+        'diversity': 0,
+        'convergence_rate': 0,
+    }
+
+    for simulation in range(total_simulations):
+        try:
+            print(f"Running simulation {simulation + 1}/{total_simulations} with initial_temp={initial_temp}")
+
+            start_time = time.time()
+
+            # Run simulated annealing
+            best_solution, best_cost = sa_fn(
+                instance_data,
+                initial_temp,
+                final_temp,
+                alpha,
+                max_iterations
+            )
+
+            is_feasible, violations, details = verify_solution(instance_data, best_solution)
+
+            # Format and display the solution
+            formatted_solution = format_solution(best_solution)
+            print(formatted_solution)
+            print(f"Cost {best_cost}")
+
+
+            exec_time = time.time() - start_time
+
+            print(f"Simulation {simulation + 1}: Best Solution = {best_solution}, Best Cost = {best_cost}")
+
+            # Calculate proximity
+            proximity = calculate_proximity(optimal_cost, best_cost)
+            print(f"Proximity to optimal: {proximity:.2f}%")
+
+            # Verify solution validity
+            is_valid, _, _ = verify_solution(
+                instance_data,
+                best_solution
+            )
+            print(f"Solution validity: {is_valid}")
+
+            # Store results
+            results['costs'].append(best_cost)
+            results['exec_times'].append(exec_time)
+            results['proximities'].append(proximity)
+
+            if is_valid:
+                results['valid_solutions'] += 1
+
+        except Exception as e:
+            print(f"Error during simulation {simulation + 1}: {e}")
+            continue
+
+    # Calculate summary statistics
+    if results['costs']:
+        initial_cost = results['costs'][0]
+        results.update({
+            'average_cost': statistics.mean(results['costs']),
+            'min_cost': min(results['costs']),
+            'max_cost': max(results['costs']),
+            'valid_percentage': (results['valid_solutions'] / total_simulations) * 100,
+            'average_execution_time': statistics.mean(results['exec_times']),
+            'average_proximity': statistics.mean(results['proximities']),
+            'diversity': statistics.variance(results['costs']) if len(results['costs']) > 1 else 0,
+            'convergence_rate': ((initial_cost - min(results['costs'])) / initial_cost * 100)
+        })
+
+    print(f"Evaluation for instance {instance_path} completed:\n", results)
+    return results
+
+
+if __name__ == "__main__":
+    instance_file = "../../data/B/B-n44-k7.vrp"  
+    solution_file = "../../data/B/B-n44-k7.sol"
+
+    results = evaluate_one_instance(
+        instance_path=instance_file,
+        sa_fn=simulated_annealing,
+        solution_path=solution_file,
+        initial_temp=1000,
+        final_temp=5,
+        alpha=0.99,
+        max_iterations=100,
+        total_simulations=4
+    )
+
+    print("Evaluation Results:")
+    display_results({'single_instance': {'initial_temps': {1000: results}}})

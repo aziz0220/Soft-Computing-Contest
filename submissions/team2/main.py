@@ -40,27 +40,27 @@ def main():
     data_directory = os.path.join(script_dir, "../../data")
     # results = evaluate_algorithm(data_directory, tabu_search, optimal_solution_path, iterations=max_iterations, tabu_tenures=tabu_tenures)
 
-    # # Affichage des résultats de l'évaluation globale
-    # display_results(results)
+    # # # Affichage des résultats de l'évaluation globale
+    # # display_results(results)
 
-    taboue_results= evaluate_algorithm_for_single_instance(instance_path, tabu_search, optimal_solution_path, iterations=max_iterations, tabu_tenures=tabu_tenures)
+    # # taboue_results= evaluate_algorithm_for_single_instance(instance_path, tabu_search, optimal_solution_path, iterations=max_iterations, tabu_tenures=tabu_tenures)
 
-    display_results(taboue_results)
+    # display_results(taboue_results)
 
-    plot_simple_results(taboue_results)
+    # plot_simple_results(taboue_results)
 
     # Comparison des 4 approches
     # generate_plots(taboue_results, recuit_results, locale_results, gloutonne_results)
 
 
       # Parameters for Simulated Annealing
-    # initial_temp = 1000
-    # final_temp = 5
-    # alpha = 0.99
+    initial_temp = 1000
+    final_temp = 5
+    alpha = 0.99
 
-    # recuit_results = recuit_evaluate_algorithm(data_directory, simulated_annealing, optimal_solution_path, initial_temp=initial_temp, final_temp=final_temp, alpha=alpha, max_iterations=max_iterations)
+    recuit_results = recuit_evaluate_algorithm(data_directory, simulated_annealing, optimal_solution_path, initial_temp=initial_temp, final_temp=final_temp, alpha=alpha, max_iterations=max_iterations)
 
-    # recuit_display_results(recuit_results)
+    recuit_display_results(recuit_results)
 
     # plot_simple_results(recuit_results)
 
