@@ -2,11 +2,14 @@ import math
 import random
 import sys
 import os
+from contextlib import redirect_stdout
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
 from template_code.read_instances import read_instance
 from template_code.verify_solution import verify_solution
 from template_code.verify_solution import euclidean_distance
+
 
 
 def calculate_cost(solution, nodes):
@@ -135,7 +138,6 @@ if __name__ == "__main__":
     formatted_solution = format_solution(best_solution)
     print(formatted_solution)
     print(f"Cost {best_cost}")
-
 
     if is_feasible:
         print("The final solution is feasible.")

@@ -59,72 +59,53 @@ def evaluate_algorithm(data_path, sa_fn, solution_path, initial_temp=1000, final
                     print(f"Error reading instance {filename}: {e}")
                     continue
 
+                # Initialize metrics for this instance
                 instance_results = {
-                    'initial_temps': {},
+                    'average_cost': 0,
+                    'average_proximity': 0,
+                    'average_execution_time': 0,
+                    'valid_solutions_ratio': 0
                 }
+                total_simulations = 5
 
-                for init_temp in [initial_temp]:
-                    costs = []
-                    valid_solutions = 0
-                    exec_times = []
-                    proximities = []
-                    total_simulations = 5
+                # Run simulations
+                costs = []
+                proximities = []
+                exec_times = []
+                valid_solutions = 0
 
-                    for _ in range(total_simulations):
-                        try:
-                            print(f"Running simulated_annealing with initial_temp={init_temp} for {filename}")
+                for _ in range(total_simulations):
+                    start_time = time.time()
 
-                            start_time = time.time()
+                    # Run simulated annealing
+                    solution, cost = sa_fn(
+                        instance_data,
+                        initial_temp=initial_temp,
+                        final_temp=final_temp,
+                        alpha=alpha,
+                        max_iterations=max_iterations
+                    )
 
-                            best_solution, best_cost = sa_fn(
-                                instance_data,
-                                init_temp,
-                                final_temp,
-                                alpha,
-                                max_iterations
-                            )
+                    end_time = time.time()
+                    exec_time = end_time - start_time
+                    exec_times.append(exec_time)
 
-                            exec_time = time.time() - start_time
+                    # Validate solution and calculate proximity
+                    if cost <= capacity:
+                        valid_solutions += 1
+                    costs.append(cost)
+                    proximity = (cost - optimal_cost) / optimal_cost * 100
+                    proximities.append(proximity)
 
-                            print(f"Best Solution: {best_solution}, Best Cost: {best_cost}")
-
-                            proximity = calculate_proximity(optimal_cost, best_cost)
-                            proximities.append(proximity)
-                            print(f"Proximity to optimal solution: {proximity:.2f}%")
-
-                            is_valid, _, _ = verify_solution(
-                                {'nodes': nodes, 'demands': demands, 'capacity': capacity},
-                                best_solution
-                            )
-                            print(f"Solution validity: {is_valid}")
-                            costs.append(best_cost)
-                            exec_times.append(exec_time)
-
-                            if is_valid:
-                                valid_solutions += 1
-                        except Exception as e:
-                            print(f"Error during simulated_annealing or validation for {filename}, initial_temp={init_temp}: {e}")
-                            continue
-
-                    if costs:
-                        initial_cost = costs[0]
-                        instance_results['initial_temps'][init_temp] = {
-                            'average_cost': statistics.mean(costs),
-                            'min_cost': min(costs),
-                            'max_cost': max(costs),
-                            'valid_percentage': (valid_solutions / total_simulations) * 100,
-                            'feasibility_rate': (valid_solutions / total_simulations) * 100,
-                            'average_execution_time': statistics.mean(exec_times),
-                            'average_proximity': statistics.mean(proximities),
-                            'diversity': statistics.variance(costs) if len(costs) > 1 else 0,
-                            'convergence_rate': (initial_cost - min(costs)) / initial_cost * 100
-                        }
-                    else:
-                        print(f"No costs recorded for {filename} with initial_temp={init_temp}")
+                # Aggregate results
+                instance_results['average_cost'] = sum(costs) / total_simulations
+                instance_results['average_proximity'] = sum(proximities) / total_simulations
+                instance_results['average_execution_time'] = sum(exec_times) / total_simulations
+                instance_results['valid_solutions_ratio'] = valid_solutions / total_simulations
 
                 results[filename] = instance_results
+                print(f"Results for {filename}: {instance_results}")
 
-    print("Final evaluation results:", results)
     return results
 
 def display_results(results):
@@ -244,8 +225,8 @@ def evaluate_one_instance(instance_path, sa_fn, solution_path, initial_temp=1000
 
 
 if __name__ == "__main__":
-    instance_file = "../../data/B/B-n44-k7.vrp"  
-    solution_file = "../../data/B/B-n44-k7.sol"
+    instance_file = "../../data/B/B-n31-k5.vrp"  
+    solution_file = "../../data/B/B-n31-k5.sol"
 
     results = evaluate_one_instance(
         instance_path=instance_file,
@@ -255,7 +236,7 @@ if __name__ == "__main__":
         final_temp=5,
         alpha=0.99,
         max_iterations=100,
-        total_simulations=4
+        total_simulations=1
     )
 
     print("Evaluation Results:")
