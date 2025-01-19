@@ -8,6 +8,9 @@ from rechTabouEvaluation import evaluate_algorithm, display_results,load_optimal
 from rechercheTabouImpl import tabu_search
 from Comparaison import  plot_simple_results
 from read_instances import read_instance
+from verify_solution import verify_solution
+from heuristiqueGloutonne import greedy_cvrp
+from heuristiqueGloutonneEval import evaluate_algorithm, display_results
 
 def main():
     # Répertoire contenant le script
@@ -34,6 +37,7 @@ def main():
     # Paramètres de la recherche taboue
     max_iterations = 100
     tabu_tenures = [5, 10, 20]
+ #   params = [5, 10, 20]
 
     # Evaluation globale sur toutes les instances
     data_directory = os.path.join(script_dir, "../../data")
@@ -41,6 +45,15 @@ def main():
 
     # Affichage des résultats de l'évaluation globale
     #display_results(results)
+
+  # Évaluation de l'algorithme glouton
+    # print("Évaluation de l'algorithme glouton sur les instances...")
+    # results = evaluate_algorithm(data_directory, greedy_cvrp, None, iterations=max_iterations, params=params)
+
+    # # Affichage des résultats
+    # print("\nRésultats finaux :")
+    # display_results(results)
+
 
     taboue_results= evaluate_algorithm_for_single_instance(instance_path, tabu_search, optimal_solution_path, iterations=max_iterations, tabu_tenures=tabu_tenures)
 
